@@ -37,7 +37,7 @@ class Ledger extends Model
         return $this->hasManyThrough(JournalTransaction::class, Journal::class);
     }
 
-    public function getCurrentBalance(string $currency): Money
+    public function getCurrentBalance(string $currency = 'BDT'): Money
     {
         if ($this->type == 'asset' || $this->type == 'expense') {
             $balance = $this->journal_transactions->sum('debit') - $this->journal_transactions->sum('credit');

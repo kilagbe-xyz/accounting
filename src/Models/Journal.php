@@ -26,6 +26,14 @@ class Journal extends Model
      */
     protected $table = 'accounting_journals';
 
+    /**
+     * @var array
+     */
+    protected $dates = [
+        'deleted_at',
+        'updated_at'
+    ];
+
     public function morphed(): MorphTo
     {
         return $this->morphTo();
@@ -35,14 +43,6 @@ class Journal extends Model
     {
         return $this->belongsTo(Ledger::class);
     }
-
-    /**
-     * @var array
-     */
-    protected $dates = [
-        'deleted_at',
-        'updated_at'
-    ];
 
     protected static function boot()
     {
@@ -153,10 +153,10 @@ class Journal extends Model
     }
 
     /**
-     * Get the balance of the journal in dollars.  This "could" include future dates.
+     * Get the balance of the journal in Money.  This "could" include future dates.
      * @return float|int
      */
-    public function getCurrentBalanceInDollars()
+    public function getCurrentBalanceInMoney()
     {
         return $this->getCurrentBalance()->getAmount() / 100;
     }
@@ -165,7 +165,7 @@ class Journal extends Model
      * Get balance
      * @return float|int
      */
-    public function getBalanceInDollars()
+    public function getBalanceInMoney()
     {
         return $this->getBalance()->getAmount() / 100;
     }
@@ -201,7 +201,7 @@ class Journal extends Model
      * @param Carbon $post_date
      * @return JournalTransaction
      */
-    public function creditDollars($value, string $memo = null, Carbon $post_date = null): JournalTransaction
+    public function creditMoney($value, string $memo = null, Carbon $post_date = null): JournalTransaction
     {
         $value = (int)($value * 100);
         return $this->credit($value, $memo, $post_date);
@@ -214,7 +214,7 @@ class Journal extends Model
      * @param Carbon $post_date
      * @return JournalTransaction
      */
-    public function debitDollars($value, string $memo = null, Carbon $post_date = null): JournalTransaction
+    public function debitMoney($value, string $memo = null, Carbon $post_date = null): JournalTransaction
     {
         $value = (int)($value * 100);
         return $this->debit($value, $memo, $post_date);
@@ -224,20 +224,20 @@ class Journal extends Model
      * Calculate the dollar amount debited to a journal today
      * @return float|int
      */
-    public function getDollarsDebitedToday()
+    public function getMoneyDebitedToday()
     {
         $today = Carbon::now();
-        return $this->getDollarsDebitedOn($today);
+        return $this->getMoneyDebitedOn($today);
     }
 
     /**
      * Calculate the dollar amount credited to a journal today
      * @return float|int
      */
-    public function getDollarsCreditedToday()
+    public function getMoneyCreditedToday()
     {
         $today = Carbon::now();
-        return $this->getDollarsCreditedOn($today);
+        return $this->getMoneyCreditedOn($today);
     }
 
     /**
@@ -245,7 +245,7 @@ class Journal extends Model
      * @param Carbon $date
      * @return float|int
      */
-    public function getDollarsDebitedOn(Carbon $date)
+    public function getMoneyDebitedOn(Carbon $date)
     {
         return $this
                 ->transactions()
@@ -261,7 +261,7 @@ class Journal extends Model
      * @param Carbon $date
      * @return float|int
      */
-    public function getDollarsCreditedOn(Carbon $date)
+    public function getMoneyCreditedOn(Carbon $date)
     {
         return $this
                 ->transactions()
