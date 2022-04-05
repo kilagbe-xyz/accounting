@@ -13,9 +13,9 @@ class AccountingServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->publishes([
-            __DIR__ . '/../../config/accounting.php' => config_path('accounting.php'),
-        ], 'config');
+        $path = realpath(__DIR__.'/../../config/accounting.php');
+
+        $this->publishes([ $path => config_path('accounting.php'),], 'config');
 
         $this->publishes([
             __DIR__ . '/../migrations/' => database_path('/migrations')
