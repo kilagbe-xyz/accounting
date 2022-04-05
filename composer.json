@@ -1,5 +1,5 @@
 {
-    "name": "scottlaurent/accounting",
+    "name": "kilagbe-xyz/accounting",
     "description": "Laravel Accounting Journals for Eloquent Models",
     "license": "MIT",
     "keywords": ["laravel", "accounting"],
@@ -25,6 +25,8 @@
             "Scottlaurent\\Accounting\\": "src/"
         }
     },
+    "prefer-stable": true,
+    "minimum-stability": "dev",
     "require-dev": {
         "phpunit/phpunit": "^9",
         "mockery/mockery": "^1.3",
